@@ -5,22 +5,22 @@ import java.util.Scanner;
 //I have not given or received any unauthorized aid on this piece of work
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("/Users/cyruschan/IdeaProjects/Counting Plugged/Nineteen+eighty-four.txt"));
+        Scanner scanner = new Scanner(new File("/Users/cyruschan/IdeaProjects/Counting Plugged/Bible_KJV.txt"));
         StringBuilder sb = new StringBuilder();
         while (scanner.hasNext()) {
             sb.append(scanner.next().toLowerCase()).append(" ");
         }
         System.out.println("String Builder done");
         //StringBuilder is used to change the file type from txt to something that can split
-        String[] cleanWords = sb.toString().split("[^[\\w]]+");
+        String[] cleanWords = sb.toString().split("[^'’[a-zA-Z]]+");
         System.out.println("Words split");
         //cleaning words using .split()
         ArrayList<word> words = new ArrayList<>();
-        for (int i = 0; i < cleanWords.length; i++){
+        for (String cleanWord : cleanWords) {
             boolean isANewWord = true;
 
             for (int j = 0; j < words.size(); j++) {
-                if (words.get(j).getName().equals(cleanWords[i])) {
+                if (words.get(j).getName().equals(cleanWord)) {
                     // If the word is already present in the list, update its count
                     words.set(j, new word(words.get(j).getName(), words.get(j).getCount() + 1));
                     isANewWord = false;
@@ -30,12 +30,12 @@ public class Main {
 
             if (isANewWord) {
                 // If it's a new word, add it to the list with count = 1
-                words.add(new word(cleanWords[i], 1));
-                System.out.println("New word: "+cleanWords[i]);
+                words.add(new word(cleanWord, 1));
+                System.out.println("New word: " + cleanWord);
             }
         }
         System.out.println("New words added");
-        Scanner commonWords = new Scanner(new File ("/Users/cyruschan/IdeaProjects/Counting Plugged/commonWords.txt"));
+        Scanner commonWords = new Scanner(new File ("/Users/cyruschan/IdeaProjects/Counting Plugged/bibleCommonWords.txt"));
         int commonWordsCount = 0;
         while (commonWords.hasNextLine()){
             commonWords.nextLine();
@@ -46,7 +46,7 @@ public class Main {
         String[] commonWordsArray = new String[commonWordsCount];
 
         // Create a new Scanner to read from the file again
-        commonWords = new Scanner(new File ("/Users/cyruschan/IdeaProjects/Counting Plugged/commonWords.txt"));
+        commonWords = new Scanner(new File ("/Users/cyruschan/IdeaProjects/Counting Plugged/bibleCommonWords.txt"));
         for (int i = 0; i < commonWordsCount; i++) {
             commonWordsArray[i] = commonWords.nextLine().toLowerCase();
             System.out.println("New common word: " + commonWordsArray[i]);
@@ -55,7 +55,7 @@ public class Main {
             System.out.println("Current words checking: " + words.get(i).getName());
             //checks the words array list to see if it's a common word
             //have to do scanner here to reset every time!
-            for (int j = 0; j < 79; j++){
+            for (int j = 0; j < commonWordsCount; j++){
                 if (commonWordsArray[j].equals(words.get(i).getName())||words.get(i).getName().equalsIgnoreCase("s")){
                     System.out.println(commonWordsArray[j] +" is a common word!");
                     //the programme breaks and removes the word if it is common
@@ -76,7 +76,7 @@ public class Main {
             // bubble sorting the array
 
         }
-        System.out.println("The top 5 words are:");
+        System.out.println("The top words are:");
         for (int i = words.size()-1; i > words.size()-6; i--){
             System.out.println("Word: " + words.get(i).getName() + " - Count: " + words.get(i).getCount());
         }
